@@ -6,10 +6,10 @@ endif
 
 .DEFAULT_GOAL := build
 
-.PHONY: fmt vet build clean help cognitive test
+.PHONY: fmt vet build clean help cognitive
 
 
-build: vet ## build the binaries, to the build/ folder (default target)
+build: vet ## build the binary, to the build/ folder (default target)
 	@echo "Building $(MODULE_NAME)..."
 	@go build -o $(BUILD_DIR)/ -tags "$(TAGS)" ./...
 	
@@ -29,3 +29,6 @@ vet: fmt
 cognitive: ## run the cognitive complexity checker
 	@echo "Running gocognit..."
 	@gocognit  -ignore "_test|testdata" -top 5 .
+
+help: ## show this help message
+	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m\033[0m\n"} /^[$$()% 0-9a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
