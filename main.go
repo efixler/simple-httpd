@@ -8,6 +8,7 @@ import (
 	"os"
 
 	"github.com/efixler/envflags"
+	"github.com/efixler/simple-httpd/internal"
 )
 
 const (
@@ -15,17 +16,23 @@ const (
 )
 
 var (
-	flags flag.FlagSet
-	host  *envflags.Value[string]
-	port  *envflags.Value[int]
-	dir   *envflags.Value[string]
+	flags   flag.FlagSet
+	host    *envflags.Value[string]
+	port    *envflags.Value[int]
+	dir     *envflags.Value[string]
+	noCache *envflags.Value[bool]
 )
 
 func main() {
 	assertDirectoryExists(dir.Get())
 
-	fs := http.FileServer(http.Dir(dir.Get()))
-	http.Handle("/", http.StripPrefix("/", fs))
+	fs := http.StripPrefix("/", http.FileServer(http.Dir(dir.Get()))).ServeHTTP
+	if noCache.Get() {
+		fs = internal.Chain(fs, internal.NoCache)
+	}
+
+	http.HandleFunc("/", fs)
+
 	slog.Info("simple-httpd starting up", "dir", dir.Get(), "host:port", fmt.Sprintf("%s:%d", host.Get(), port.Get()))
 	host := host.Get()
 	if host == "*" {
@@ -70,7 +77,8 @@ func init() {
 	port.AddTo(&flags, "port", "Port to run the server on")
 	dir = envflags.NewString("DIRECTORY", ".")
 	dir.AddTo(&flags, "dir", "Directory to serve")
-
+	noCache = envflags.NewBool("NO_CACHE", false)
+	noCache.AddTo(&flags, "no-cache", "Send no-cache headers on every request")
 	logLevel := envflags.NewLogLevel("LOG_LEVEL", slog.LevelInfo)
 	logLevel.AddTo(&flags, "log-level", "Set the log level [debug|error|info|warn]")
 	flags.Parse(os.Args[1:])
