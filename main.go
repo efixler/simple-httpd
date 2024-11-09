@@ -8,7 +8,7 @@ import (
 	"os"
 
 	"github.com/efixler/envflags"
-	"github.com/efixler/simple-httpd/internal"
+	"github.com/efixler/webutil/middleware"
 )
 
 const (
@@ -28,7 +28,7 @@ func main() {
 
 	fs := http.StripPrefix("/", http.FileServer(http.Dir(dir.Get()))).ServeHTTP
 	if noCache.Get() {
-		fs = internal.Chain(fs, internal.NoCache)
+		fs = middleware.Chain(fs, middleware.NoCache)
 	}
 
 	http.HandleFunc("/", fs)

@@ -1,2 +1,4 @@
 github.com/efixler/envflags v0.0.0-20240216173636-8ba3a3ae2ac0 h1:0Mtp62zJ0jY58bdJqty71UtJxM3u15kM2I2lI4bS07A=
 github.com/efixler/envflags v0.0.0-20240216173636-8ba3a3ae2ac0/go.mod h1:raY03IjmZ5RonoJ7HhBULK630UCrvufj0Z76qy382mM=
+github.com/efixler/webutil v0.0.0-20241109222402-fb5a03d38513 h1:PRTcXg2yBdKrGQKvSNjBnc4yBZ9kcPFinFNXLCB83R0=
+github.com/efixler/webutil v0.0.0-20241109222402-fb5a03d38513/go.mod h1:Z70Ta3UANu5ZWAr1xhJjzWokxd88RumZi/iBOReMp/s=
