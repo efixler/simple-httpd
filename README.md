@@ -16,7 +16,7 @@ Usage:
 
 Flags:
  
-  -h
+    -h
         Show this help message
   -dir value
         Directory to serve
@@ -27,6 +27,9 @@ Flags:
   -log-level value
         Set the log level [debug|error|info|warn]
         Environment: SIMPLE_HTTPD_LOG_LEVEL
+  -no-cache
+        Send no-cache headers on every request
+        Environment: SIMPLE_HTTPD_NO_CACHE
   -port value
         Port to run the server on
         Environment: SIMPLE_HTTPD_PORT (default 4411)
